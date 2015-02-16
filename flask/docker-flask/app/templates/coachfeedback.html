@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+{% block content%}
+<!-- js templates -->
+<script type="text/template" id ="template-participant-list">
+    <label for="participants">Username</label>
+    <select id="participants" class="form-control" name="username">
+    </select>
+</script>
+<script type="text/template" id ="template-participant">
+    <option value="<%= username %>"> 
+        <%= username %>
+    </option>
+</script>
+<script type="text/template" id ="template-variable-list">
+<label for="variables">Description</label> <span class="glyphicon glyphicon-plus"
+            id="add-variable" aria-hidden="true"></span> 
+<select id="variables" class="form-control" name="feedback"></select>
+</script>
+<script type="text/template" id ="template-variable">
+    <option id="opt" value="<%= feedback_id %>"> 
+        <%= description %> (<%= datatype %>)
+    </option>
+</script>
+<script type="text/template" id ="template-participant-selected">
+    <div class="col-md-4">
+        <strong><%= username %></strong>
+    </div>
+    <div class="col-md-2">
+        <%= gender %>
+    </div>
+    <div class="col-md-2">
+        <%= age %>
+    </div>
+</script>
+<script type="text/template" id ="template-observation-row">
+    <td><%= round %></td>
+    <td><%= description %> </td>
+    <td><%= value %></td>
+    <td>
+        <button type="button" id="delete" class="btn btn-danger btn-sm">Delete</button>
+    </td>
+</script>
+<script type="text/template" id="template-variable-add">
+    <form id="form-variable-add">
+        <input name="description" type="text" class="form-control" id="variable-add-description" placeholder="Description">
+        <select name="datatype_id">
+            <% _.each(datatypes, function(dt){ %>
+                <option value="<%=dt.datatype_id%>">
+                    <%=dt.datatype%>
+                </option>
+            <% }); %>
+        </select>
+        <button type="button" id='cancel-variables-button' class="btn btn-warning">Cancel</button>
+        <button type="button" id='add-variables-button' class="btn btn-default">Submit</button>
+
+
+    </form>
+</script>
+<script type="text/javascript" src="{{
+    url_for('static', filename='js/models/variable.js')
+}}"></script>
+<script type="text/javascript" src="{{
+    url_for('static', filename='js/views/variable.js')
+}}"></script>
+<script type="text/javascript" src="{{
+    url_for('static', filename='js/models/participant.js')
+}}"></script>
+<script type="text/javascript" src="{{
+    url_for('static', filename='js/views/participant.js')
+}}"></script>
+<script type="text/javascript" src="{{
+    url_for('static', filename='js/models/observations.js')
+}}"></script>
+<script type="text/javascript" src="{{
+    url_for('static', filename='js/views/observations.js')
+}}"></script>
+<script type="text/template" id="value-form">    
+</script>
+<script type="text/template" id="categorical-review">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">Current variables</h3>
+        </div>  
+        <div class="panel-body">
+            <div class="row">
+                <% _.each(categories, function(cat){ %>
+                    <div class="col-md-4" id="category">
+                        <a href="javascript:addCat('<%=cat%>');"><%=cat%></a>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+</script>
+<div class="row">
+    <div class="col-md-4">
+<form id="base">
+    <label for="round">Round</label>
+    <select id="round" name="round" class="form-control">
+        <option>0</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+    </select>
+    <label for="value">Value</label>
+     <input name="value" type="text" class="form-control" id="feedback-value"
+     placeholder="Value">
+     <button type="button" id='submit-button' class="btn btn-default">Submit</button>
+ </form>
+ <div id="cat-display">
+ </div>
+ <div id="variable-add">
+ </div>
+ </div>
+ <div class="col-md-6">
+<div class="row" id="participant-active">
+</div>
+<table id="observation-table" class="table table-condensed table-striped">
+    <tr>
+        <th><span id="round-sort">Round</span></th>
+        <th><span id="desc-sort">Desc.</span></th>
+        <th>Value</th>
+        <th></th>
+    </tr>
+    
+</table>
+</div>
+</div>
+<script type="text/javascript">
+    app.vcv = new VariableCollectionView({'collection':new VariableCollection()});
+    app.pcv = new ParticipantCollectionView({'collection':new ParticipantCollection()});
+    $('form#base').prepend(app.vcv.el);
+    $('form#base').prepend(app.pcv.el);
+    app.ocv = new ObservationCollectionView(
+                {'collection':new
+                    ObservationCollection()});
+    app.pav = new ParticipantActiveView({});
+    app.vf = new ValueForm();
+
+</script>
+{% endblock %}

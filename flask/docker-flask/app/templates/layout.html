@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- Just for me -->
+        <title>{% block title %}{% endblock %}</title>
+        {% block head %}{% endblock %} 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS Libraries -->    
+        <link href="{{ url_for('static', 
+            filename='css/bootstrap.css') }}" rel="stylesheet"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/backgrid.css')}}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/tipsy.css')}}" />
+        <!-- CSS Custom -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+        {% block headjs %}
+        <!--JS Libraries and frameworks -->
+        <script type="text/javascript">
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/sprintf.js') }}"></script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/underscore.js') }}"></script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/jquery-2.1.0.js') }}"></script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/backbone.js') }}"></script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/jquery.metadata.js') }}"></script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/jquery.tablesorter.js') }}"></script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/jquery.tipsy.js') }}">
+        </script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ 
+            url_for('static', filename='js/lib/d3.v3.js') }}"></script>
+        {% endblock %}
+        <script>
+            var app = (app || {});
+        </script>
+    </head>
+    <body>
+        <div id="content" class="container">
+            <nav class="navbar navbar-default" role="navigation">
+              <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" 
+                      data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#"><strong>Tru</strong>Print</a>
+
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+                    <li id="page-index"> 
+                        <a href="{{url_for('test') }}" class="btn btn-default" 
+                            id="home">Home</a>
+                        </li>
+                        <li id="page-index">
+                        <script type="text/javascript">
+                            reloadSite = function(){
+                                $.get('/reload', function( response  ){
+                                        location.reload()
+                                        });
+                            }
+                        </script>
+                        <a href="javascript:reloadSite()">reload</a>
+                    </li>
+                  </ul>
+                </div><!-- /.navbar-collapse -->
+              </div><!-- /.container-fluid -->
+            </nav>
+
+        {% block content %}{% endblock %}
+        <div id="footer" class="footer">{% block footer %}&copy; Copyright 2014 by John C Earls{% endblock %} </div>
+    </div>
+    </body>
+</html>
