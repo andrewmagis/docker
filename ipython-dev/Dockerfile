@@ -1,19 +1,37 @@
-FROM ipython/scipystack
+#note this is based on ubuntu 14.04.1 LTS
+FROM truprint/jupyterbase
 
-MAINTAINER IPython Project <ipython-dev@scipy.org>
+MAINTAINER John C. Earls <john.c.earls@gmail.com>
 
-VOLUME /notebooks
-WORKDIR /notebooks
+ENV PASSWORD 100i
 
-EXPOSE 8888
+RUN apt-get update && apt-get install -y python-mysqldb python-lxml \
+                        libtiff4-dev libjpeg8-dev zlib1g-dev \
+                        libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev \
+                        python-tk postgresql libpq-dev python-psycopg2
 
-# You can mount your own SSL certs as necessary here
-ENV PEM_FILE /mycert.pem
-# $PASSWORD will get `unset` within notebook.sh, turned into an IPython style hash
-ENV PASSWORD Dont make this your default
-ENV USE_HTTP 0
-ADD mycert.pem /
-ADD notebook.sh /
-RUN chmod u+x /notebook.sh
+RUN pip2.7 install SQLAlchemy beautifulsoup4 plotly brewer2mpl pytabix fitbit \
+                        reportlab requests-oauthlib oauthlib  setuptools xlrd
 
-CMD ["/notebook.sh"]
+#RUN pip install ete2
+RUN pip2.7 install pillow
+
+
+RUN pip2.7 install --upgrade seaborn
+
+ADD quicksect /tmp
+
+RUN cd /tmp && python setup.py install && rm -rf /tmp
+
+#ADD scikit-bio /tmp
+
+#RUN cd /tmp && python setup.py install && rm -rf /tmp
+
+#RUN pip2.7 install --upgrade tornado
+#RUN pip install --upgrade tornado
+
+VOLUME ["/notebooks"]
+
+ENV PATH /pythonpath:$PATH
+VOLUME ["/pythonpath"]
+
