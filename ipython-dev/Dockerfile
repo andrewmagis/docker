@@ -1,5 +1,5 @@
 #note this is based on ubuntu 14.04.1 LTS
-FROM truprint/jupyterbase
+FROM trueprint/jupyterbase
 
 MAINTAINER John C. Earls <john.c.earls@gmail.com>
 
@@ -27,7 +27,7 @@ RUN cd /tmp && python setup.py install && rm -rf /tmp
 
 #RUN cd /tmp && python setup.py install && rm -rf /tmp
 
-#RUN pip2.7 install --upgrade tornado
+RUN pip2.7 install boto
 #RUN pip install --upgrade tornado
 
 VOLUME ["/notebooks"]
